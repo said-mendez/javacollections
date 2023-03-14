@@ -1,14 +1,14 @@
 package com.custom.collections;
 
-import java.util.Iterator;
-
 public class CustomArrayList<E> implements CustomListInterface<E> {
-    private int initialCapacity, size = 0;
+    private final int initialCapacity;
+    private int size = 0;
     private static final int INITIAL_CAPACITY = 20;
-    private Object [] arrayList;
+    private E [] arrayList;
 
+    @SuppressWarnings("unchecked")
     private void initializeArray() {
-        this.arrayList = new Object [this.initialCapacity];
+        this.arrayList = (E[]) new Object [this.initialCapacity];
     }
 
     public CustomArrayList(int initialCapacity) {
@@ -21,36 +21,30 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
         initializeArray();
     }
 
-    private Object [] cloneArrayList() {
-        Object [] auxArrayList = new Object [this.size];
+    @SuppressWarnings("unchecked")
+    private E [] cloneArrayList() {
+        E [] auxArrayList = (E[]) new Object [this.size];
 
-        for (int i = 0; i < this.size; i++) {
-            auxArrayList[i] = this.arrayList[i];
-        }
+        System.arraycopy(this.arrayList, 0, auxArrayList, 0, this.size);
 
         return auxArrayList;
     }
 
+    @SuppressWarnings("unchecked")
     private void addCapacity() {
         if (this.size == this.arrayList.length) {
-            Object [] tempArrayList = cloneArrayList();
+            E [] tempArrayList = cloneArrayList();
 
             // Increase capacity 50% more than the previous one
             int newCapacity = (int) (this.size * 1.5);
-            this.arrayList = new Object [newCapacity];
+            this.arrayList = (E[]) new Object [newCapacity];
 
-            for (int i = 0; i < this.size; i++) {
-                this.arrayList[i] = tempArrayList[i];
-            }
+            System.arraycopy(this.arrayList, 0, tempArrayList, 0, this.size);
         }
     }
 
     public boolean isIndexOutOfBounds(int index) {
-        if (index < 0  || index >= this.size) {
-            return true;
-        } else {
-            return false;
-        }
+        return index < 0 || index >= this.size;
     }
 
     @Override
@@ -61,16 +55,17 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void add(int index, E element) throws IndexOutOfBoundsException {
         System.out.println(index);
         if (this.size == 0 || index == this.size) {
             add(element);
         } else if (!isIndexOutOfBounds(index)) {
             addCapacity();
-            Object [] tempArrayList = cloneArrayList();
+            E [] tempArrayList = cloneArrayList();
 
             int tempIndex = 0;
-            this.arrayList = new Object [this.arrayList.length];
+            this.arrayList = (E[]) new Object [this.arrayList.length];
 
             for (int i = 0; i <= tempArrayList.length; i++) {
                 if (i == index) {
@@ -88,12 +83,12 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
     }
 
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(E e) {
         boolean elementIsFound = false;
         int index = 0;
 
         while(!elementIsFound && index < this.size) {
-            if (this.arrayList[index].equals(o)) {
+            if (this.arrayList[index].equals(e)) {
                 elementIsFound = true;
             }
             index++;
@@ -103,7 +98,7 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
     }
 
     @Override
-    public Object get(int index) throws IndexOutOfBoundsException {
+    public E get(int index) throws IndexOutOfBoundsException {
         if (isIndexOutOfBounds(index)) {
             throw new IndexOutOfBoundsException("Index Out Of Bounds!!");
         }
@@ -129,11 +124,7 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
 
     @Override
     public boolean isEmpty() {
-        if (this.size == 0) {
-            return true;
-        }
-
-        return false;
+        return this.size == 0;
     }
 
     @Override
@@ -150,18 +141,20 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
             throw new IndexOutOfBoundsException("Index out of Bounds");
         }
 
-        Object previousElement = this.arrayList[index];
+        E previousElement = this.arrayList[index];
         this.arrayList[index] = element;
 
-        return (E) previousElement;
+        return previousElement;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void clear() {
-        this.arrayList = new Object[INITIAL_CAPACITY];
+        this.arrayList = (E[]) new Object[INITIAL_CAPACITY];
         this.size = 0;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Object remove(int index) throws IllegalStateException, IndexOutOfBoundsException {
         if (this.isEmpty()) {
@@ -173,7 +166,7 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
 
         Object removedElement = this.arrayList[index];
         Object [] tempArrayList = cloneArrayList();
-        this.arrayList = new Object [this.arrayList.length];
+        this.arrayList = (E[]) new Object [this.arrayList.length];
         this.size = 0;
 
         for (int i = 0; i < tempArrayList.length; i++) {
@@ -185,6 +178,7 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
         return removedElement;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean remove(Object o) throws IllegalStateException {
         if (this.isEmpty()) {
@@ -195,24 +189,20 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
             return false;
         }
 
-        Object [] tempArrayList = cloneArrayList();
-        this.arrayList = new Object [this.arrayList.length];
+        E [] tempArrayList = cloneArrayList();
+        this.arrayList = (E[]) new Object [this.arrayList.length];
         this.size = 0;
 
-        for (int i = 0; i < tempArrayList.length; i++) {
-            if (!tempArrayList[i].equals(o)) {
-                this.add((E) tempArrayList[i]);
+        for (E element : tempArrayList) {
+            if (!element.equals(o)) {
+                this.add(element);
             }
         }
 
         return true;
     }
 
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
+    @SuppressWarnings("unchecked")
     public CustomListIterator<E> iterator() {
         return new CustomArrayListIterator<E>(this, this.size);
     }
@@ -222,13 +212,13 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
         if (this.isEmpty()) {
             return "The Array is Empty!";
         }
-        String listToPrint = "[";
+        StringBuilder listToPrint = new StringBuilder("[");
 
         for (int i = 0; i < this.size; i++) {
-            listToPrint += this.arrayList[i].toString() + ", ";
+            listToPrint.append(this.arrayList[i].toString()).append(", ");
         }
 
-        listToPrint = listToPrint.substring(0, listToPrint.length() - 2) + "]";
-        return listToPrint;
+        listToPrint = new StringBuilder(listToPrint.substring(0, listToPrint.length() - 2) + "]");
+        return listToPrint.toString();
     }
 }

@@ -8,13 +8,13 @@ public class CustomArrayListTest {
     private CustomArrayList<Integer> customArrayList;
     @BeforeEach
     void createNewCustomArrayList() {
-        this.customArrayList = new CustomArrayList<Integer>();
+        this.customArrayList = new CustomArrayList<>();
     }
 
     @Test
     void permitsAddingNullValues() {
         this.customArrayList.add(null);
-        assertTrue(this.customArrayList.get(0) == null);
+        assertNull(this.customArrayList.get(0));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class CustomArrayListTest {
 
     @Test
     public void allowsAddingMoreElementsThanInitialCapacity() {
-        CustomArrayList<Integer> numbers = new CustomArrayList<Integer>(5);
+        CustomArrayList<Integer> numbers = new CustomArrayList<>(5);
         assertDoesNotThrow(() -> {
             numbers.add(10);
             numbers.add(9);
@@ -59,13 +59,20 @@ public class CustomArrayListTest {
         assertEquals(9, numbers.size());
     }
 
+    @Test
+    public void itReturnsTrueIfElementWasAdded() {
+        CustomArrayList<Integer> numbers = new CustomArrayList<>(5);
+
+        assertTrue(numbers.add(10));
+    }
+
     @Nested
     @DisplayName("when new")
     class WhenNew {
         private CustomArrayList<Integer> customArrayList;
         @BeforeEach
         void createNewCustomArrayList() {
-            this.customArrayList = new CustomArrayList<Integer>();
+            this.customArrayList = new CustomArrayList<>();
         }
 
         @Test
@@ -78,7 +85,7 @@ public class CustomArrayListTest {
         @DisplayName("Allows adding value at index 0")
         void allowsAddingValueAtIndexZero() {
             this.customArrayList.add(0,20);
-            assertTrue(this.customArrayList.get(0) == (Integer)20);
+            assertSame(20, this.customArrayList.get(0));
         }
 
         @Test
@@ -91,10 +98,10 @@ public class CustomArrayListTest {
     @Nested
     @DisplayName("When has values")
     class WhenHasValues {
-        private CustomArrayList movies;
+        private CustomArrayList<String> movies;
         @BeforeEach
         void createNewCustomArrayList() {
-            this.movies = new CustomArrayList<String>();
+            this.movies = new CustomArrayList<>();
             this.movies.add("Matrix");
             this.movies.add("Space Jam");
             this.movies.add("Harry Potter and the Philosopher's Stone");
@@ -165,6 +172,17 @@ public class CustomArrayListTest {
                     System.out.println(movie);
                 }
             });
+        }
+
+        @Test
+        void itClearsTheArrayList() {
+            this.movies.clear();
+            assertEquals(0, this.movies.size());
+        }
+
+        @Test
+        void itPrintsTheListInArrayFormat() {
+            System.out.println(this.movies);
         }
     }
 }
