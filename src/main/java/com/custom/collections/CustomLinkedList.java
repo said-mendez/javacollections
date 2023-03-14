@@ -1,9 +1,7 @@
 package com.custom.collections;
 
-import java.util.List;
-
 public class CustomLinkedList<E> implements CustomListInterface<E> {
-    private ListNode head;
+    private ListNode<E> head;
     private int size;
 
     public CustomLinkedList() {
@@ -12,25 +10,21 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
     }
 
     public boolean isIndexOutOfBounds(int index) {
-        if (index < 0  || index >= this.size) {
-            return true;
-        } else {
-            return false;
-        }
+        return index < 0 || index >= this.size;
     }
 
-    public ListNode getHead() {
+    public ListNode<E> getHead() {
         return this.head;
     }
 
     @Override
     public boolean add(E element) {
-        ListNode newNode = new ListNode(element);
+        ListNode<E> newNode = new ListNode<>(element);
 
         if (this.head == null) {
             this.head = newNode;
         } else {
-            ListNode currentNode = this.head;
+            ListNode<E> currentNode = this.head;
 
             // We can avoid looping this if we keep track of the tail
             while (currentNode.nextNode != null) {
@@ -53,8 +47,8 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
             throw new IndexOutOfBoundsException("Index Out Of Bounds!!");
         }
 
-        ListNode newNode = new ListNode(element);
-        ListNode currentNode = this.head;
+        ListNode<E> newNode = new ListNode<>(element);
+        ListNode<E> currentNode = this.head;
 
         if (index == 0) {
             this.head.previousNode = newNode;
@@ -66,7 +60,7 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
                 currentNode = currentNode.nextNode;
                 i++;
             }
-            ListNode previousNode = currentNode.previousNode;
+            ListNode<E> previousNode = currentNode.previousNode;
             previousNode.nextNode = newNode;
             newNode.previousNode = previousNode;
             newNode.nextNode = currentNode;
@@ -76,12 +70,12 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
     }
 
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(E element) {
         boolean elementIsFound = false;
-        ListNode currentNode = this.head;
+        ListNode<E> currentNode = this.head;
 
         while (currentNode.nextNode != null && !elementIsFound) {
-            if (currentNode.data.equals(o)) {
+            if (currentNode.data.equals(element)) {
                 elementIsFound = true;
             } else {
                 currentNode = currentNode.nextNode;
@@ -92,7 +86,7 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
     }
 
     @Override
-    public Object get(int index) throws IndexOutOfBoundsException, IllegalStateException {
+    public E get(int index) throws IndexOutOfBoundsException, IllegalStateException {
         if (this.isEmpty()) {
             throw new IllegalStateException("The List is Empty!");
         }
@@ -103,7 +97,7 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
             throw new IndexOutOfBoundsException("Index Out Of Bounds! =(");
         }
 
-        ListNode currentNode = this.head;
+        ListNode<E> currentNode = this.head;
         for (int i = 1; i <= index; i++) {
             currentNode = currentNode.nextNode;
         }
@@ -111,16 +105,16 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
     }
 
     @Override
-    public int indexOf(Object o) throws IllegalStateException {
+    public int indexOf(E e) throws IllegalStateException {
         if (this.isEmpty()) {
             throw new IllegalStateException("The List is Empty!");
         }
 
         int indexOfElement = 0;
-        ListNode currentNode = this.head;
+        ListNode<E> currentNode = this.head;
 
         while(currentNode.nextNode != null) {
-            if (currentNode.data.equals(o)) {
+            if (currentNode.data.equals(e)) {
                 break;
             }
             currentNode = currentNode.nextNode;
@@ -132,10 +126,7 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
 
     @Override
     public boolean isEmpty() {
-        if (this.head == null) {
-            return true;
-        }
-        return false;
+        return this.head == null;
     }
 
     @Override
@@ -152,12 +143,12 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
             throw new IndexOutOfBoundsException("Index Out of Bounds!");
         }
 
-        ListNode currentNode = this.head;
+        ListNode<E> currentNode = this.head;
         E replacedElement = null;
 
         for (int i = 0; i <= index; i++) {
             if (i == index) {
-                replacedElement = (E) currentNode.data;
+                replacedElement = currentNode.data;
                 currentNode.data = element;
             }
             currentNode = currentNode.nextNode;
@@ -172,21 +163,21 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         this.size = 0;
     }
 
-    public void removingAtHead(ListNode currentNode) {
-        ListNode nextNode = currentNode.nextNode;
+    public void removingAtHead(ListNode<E> currentNode) {
+        ListNode<E> nextNode = currentNode.nextNode;
         nextNode.previousNode = null;
         this.head = nextNode;
     }
 
-    public void removingAtMiddle(ListNode currentNode) {
-        ListNode previousNode = currentNode.previousNode;
-        ListNode nextNode = currentNode.nextNode;
+    public void removingAtMiddle(ListNode<E> currentNode) {
+        ListNode<E> previousNode = currentNode.previousNode;
+        ListNode<E> nextNode = currentNode.nextNode;
         previousNode.nextNode = nextNode;
         nextNode.previousNode = previousNode;
     }
 
-    public void removingAtEnd(ListNode currentNode) {
-        ListNode previousNode = currentNode.previousNode;
+    public void removingAtEnd(ListNode<E> currentNode) {
+        ListNode<E> previousNode = currentNode.previousNode;
         previousNode.nextNode = null;
     }
 
@@ -196,8 +187,8 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
             throw new IndexOutOfBoundsException("Index Out of Bounds!");
         }
 
-        ListNode currentNode = this.head;
-        ListNode removedNode = null;
+        ListNode<E> currentNode = this.head;
+        ListNode<E> removedNode = null;
 
         if (index == 0) {
             removedNode = currentNode;
@@ -220,24 +211,28 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         }
         this.size--;
 
+        if (removedNode == null) {
+            return null;
+        }
         return removedNode.data;
     }
 
     @Override
-    public boolean remove(Object o) {
+    public boolean remove(E e) {
         boolean elementWasRemoved = false;
-        ListNode currentNode = this.head;
+        ListNode<E> currentNode = this.head;
 
         while (currentNode.nextNode != null) {
-            if (currentNode.data.equals(o)) {
+            if (currentNode.data.equals(e)) {
 
                 if (currentNode.previousNode == null) {
                     removingAtHead(currentNode);
                 }
-                else if (currentNode.nextNode != null) {
-                    removingAtMiddle(currentNode);
-                } else {
+                if (currentNode.nextNode == null) {
                     removingAtEnd(currentNode);
+                }
+                if (currentNode.nextNode != null) {
+                    removingAtMiddle(currentNode);
                 }
 
                 elementWasRemoved = true;
@@ -250,13 +245,8 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         return elementWasRemoved;
     }
 
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
     public CustomListIterator<E> iterator() {
-        return new CustomLinkedListIterator<E>(this);
+        return new CustomLinkedListIterator<>(this);
     }
 
     @Override
@@ -264,17 +254,17 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         if (this.isEmpty()) {
             return "The List is Empty!";
         }
-        String listToPrint = "[";
-        ListNode currentNode = this.head;
+        StringBuilder listToPrint = new StringBuilder("[");
+        ListNode<E> currentNode = this.head;
 
         while (currentNode.nextNode != null) {
-            listToPrint += currentNode.data.toString() + ", ";
+            listToPrint.append(currentNode.data.toString()).append(", ");
             currentNode = currentNode.nextNode;
         }
 
-        listToPrint += currentNode.data.toString() + ", ";
-        listToPrint = listToPrint.substring(0, listToPrint.length() - 2) + "]";
-        return listToPrint;
+        listToPrint.append(currentNode.data.toString()).append(", ");
+        listToPrint = new StringBuilder(listToPrint.substring(0, listToPrint.length() - 2) + "]");
+        return listToPrint.toString();
     }
 
 }

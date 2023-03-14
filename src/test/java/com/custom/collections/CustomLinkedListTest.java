@@ -14,7 +14,7 @@ public class CustomLinkedListTest {
     @Test
     void permitsAddingNullValues() {
         this.customLinkedList.add(null);
-        assertTrue(this.customLinkedList.get(0) == null);
+        assertNull(this.customLinkedList.get(0));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void allowsAddingMoreElementsThanInitialCapacity() {
-        CustomArrayList<Integer> numbers = new CustomArrayList<Integer>(5);
+        CustomArrayList<Integer> numbers = new CustomArrayList<>(5);
         assertDoesNotThrow(() -> {
             numbers.add(10);
             numbers.add(9);
@@ -65,7 +65,7 @@ public class CustomLinkedListTest {
         private CustomLinkedList<Integer> customLinkedList;
         @BeforeEach
         void createNewCustomArrayList() {
-            this.customLinkedList = new CustomLinkedList<Integer>();
+            this.customLinkedList = new CustomLinkedList<>();
         }
 
         @Test
@@ -78,7 +78,7 @@ public class CustomLinkedListTest {
         @DisplayName("Allows adding value at index 0")
         void allowsAddingValueAtIndexZero() {
             this.customLinkedList.add(0,20);
-            assertTrue(this.customLinkedList.get(0) == (Integer)20);
+            assertSame(20, this.customLinkedList.get(0));
         }
 
         @Test
@@ -91,10 +91,10 @@ public class CustomLinkedListTest {
     @Nested
     @DisplayName("When has values")
     class WhenHasValues {
-        private CustomLinkedList movies;
+        private CustomLinkedList<String> movies;
         @BeforeEach
         void createNewCustomArrayList() {
-            this.movies = new CustomLinkedList<String>();
+            this.movies = new CustomLinkedList<>();
             this.movies.add("Matrix");
             this.movies.add("Space Jam");
             this.movies.add("Harry Potter and the Philosopher's Stone");

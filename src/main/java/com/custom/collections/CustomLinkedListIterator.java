@@ -1,10 +1,10 @@
 package com.custom.collections;
 
-public class CustomLinkedListIterator<E> implements CustomListIterator {
-    private CustomLinkedList linkedList;
+public class CustomLinkedListIterator<E> implements CustomListIterator<E> {
+    private CustomLinkedList<E> linkedList;
     private ListNode currentNode;
 
-    public CustomLinkedListIterator(CustomLinkedList linkedList) {
+    public CustomLinkedListIterator(CustomLinkedList<E> linkedList) {
         this.linkedList = linkedList;
         this.currentNode = this.linkedList.getHead();
     }

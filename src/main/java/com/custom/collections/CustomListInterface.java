@@ -12,7 +12,7 @@ public interface CustomListInterface<E> {
     // Returns the element at the specified position in this list.
     E get(int index) throws IndexOutOfBoundsException, IllegalStateException;
     // Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.
-    int indexOf(Object o) throws IllegalStateException;
+    int indexOf(E e) throws IllegalStateException;
     // Returns true if this list contains no elements.
     boolean isEmpty();
     // Returns the number of elements in this list.
@@ -24,7 +24,7 @@ public interface CustomListInterface<E> {
     // Removes the element at the specified position in this list (optional operation).
     Object remove(int index) throws IllegalStateException;
     // Removes the first occurrence of the specified element from this list, if it is present (optional operation).
-    boolean remove(Object o);
+    boolean remove(E e);
     // List iterator
     CustomListIterator<E> iterator();
 }

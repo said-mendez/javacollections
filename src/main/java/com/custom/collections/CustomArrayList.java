@@ -107,14 +107,14 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
     }
 
     @Override
-    public int indexOf(Object o) throws IllegalStateException{
+    public int indexOf(E e) throws IllegalStateException{
         if (this.isEmpty()) {
             throw new IllegalStateException("Array List is Empty!");
         }
         int elementAtIndex = -1;
 
         for(int i = 0; i <  this.size; i++) {
-            if (this.arrayList[i].equals(o)) {
+            if (this.arrayList[i].equals(e)) {
                 elementAtIndex = i;
             }
         }
@@ -180,12 +180,12 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean remove(Object o) throws IllegalStateException {
+    public boolean remove(E e) throws IllegalStateException {
         if (this.isEmpty()) {
             throw new IllegalStateException("Array List is Empty!");
         }
 
-        if (indexOf(o) == -1) {
+        if (indexOf(e) == -1) {
             return false;
         }
 
@@ -194,7 +194,7 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
         this.size = 0;
 
         for (E element : tempArrayList) {
-            if (!element.equals(o)) {
+            if (!element.equals(e)) {
                 this.add(element);
             }
         }

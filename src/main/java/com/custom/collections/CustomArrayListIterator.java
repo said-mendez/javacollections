@@ -1,10 +1,11 @@
 package com.custom.collections;
 
-public class CustomArrayListIterator<E> implements CustomListIterator {
-    private int currentIndex = 0, size;
-    private CustomArrayList arrayList;
+public class CustomArrayListIterator<E> implements CustomListIterator<E> {
+    private int currentIndex = 0;
+    private final int size;
+    private final CustomArrayList<E> arrayList;
 
-    public CustomArrayListIterator(CustomArrayList arrayList, int size) {
+    public CustomArrayListIterator(CustomArrayList<E> arrayList, int size) {
         this.arrayList = arrayList;
         this.size = size;
     }
@@ -16,6 +17,6 @@ public class CustomArrayListIterator<E> implements CustomListIterator {
 
     @Override
     public E next() {
-        return (E) arrayList.get(currentIndex++);
+        return arrayList.get(currentIndex++);
     }
 }
