@@ -202,9 +202,8 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     public CustomListIterator<E> iterator() {
-        return new CustomArrayListIterator<E>(this, this.size);
+        return new CustomArrayListIterator<>(this, this.size);
     }
 
     @Override

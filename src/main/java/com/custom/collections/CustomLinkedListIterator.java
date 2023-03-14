@@ -1,27 +1,21 @@
 package com.custom.collections;
 
 public class CustomLinkedListIterator<E> implements CustomListIterator<E> {
-    private CustomLinkedList<E> linkedList;
-    private ListNode currentNode;
+    private ListNode<E> currentNode;
 
-    public CustomLinkedListIterator(CustomLinkedList<E> linkedList) {
-        this.linkedList = linkedList;
-        this.currentNode = this.linkedList.getHead();
+    public CustomLinkedListIterator(ListNode<E> head) {
+        this.currentNode = head;
     }
 
     @Override
     public boolean hasNext() {
-        if (this.currentNode != null) {
-            return true;
-        }
-
-        return false;
+        return this.currentNode != null;
     }
 
     @Override
     public E next() {
-        ListNode previousNode = this.currentNode;
-        this.currentNode = this.currentNode.nextNode;
-        return (E) previousNode.data;
+        ListNode<E> previousNode = this.currentNode;
+        this.currentNode = this.currentNode.getNextNode();
+        return previousNode.getData();
     }
 }
