@@ -163,6 +163,18 @@ public class CustomLinkedListTest {
 
             assertThrows(IllegalStateException.class, () -> customLinkedList.indexOf(7));
         }
+
+        @Test
+        void toStringThrowsIllegalStateException() {
+            // Given:
+            // customLinkedList
+
+            // When:
+            // System.out.println(customLinkedList);
+
+            // Then:
+            assertThrows(IllegalStateException.class, () -> System.out.println(customLinkedList));
+        }
     }
 
     @Nested
@@ -330,7 +342,7 @@ public class CustomLinkedListTest {
         }
 
         @Test
-        void removeLastElement() {
+        void removeInBetweenElement() {
             // Given:
             // movies
 
@@ -363,6 +375,91 @@ public class CustomLinkedListTest {
 
             // Then:
             assertEquals("Harry Potter and the Philosopher's Stone", movieName);
+        }
+
+        @Test
+        void setAtIndexOutOfBounds() {
+            // Given:
+            // movies
+
+            // When:
+            // movies.set(5, "404 Movie")
+
+            // Then:
+            assertThrows(IndexOutOfBoundsException.class, () -> movies.set(5, "404 Movie"));
+        }
+
+        @Test
+        void clearLinkedList() {
+            // Given:
+            // movies
+
+            // When:
+            movies.clear();
+
+            // Then:
+            assertEquals(0, movies.size());
+            assertTrue(movies.isEmpty());
+        }
+
+        @Test
+        void removingAtIndexZero() {
+            // Given:
+            // movies
+
+            // When:
+            String removedElement = movies.remove(0);
+
+            // Then:
+            assertEquals("Matrix", removedElement);
+        }
+
+        @Test
+        void removingAtHead() {
+            // Given:
+            // movies
+
+            // When:
+            boolean elementWasRemoved = movies.remove("Matrix");
+
+            // Then:
+            assertTrue(elementWasRemoved);
+        }
+
+        @Test
+        void removingAtEnd() {
+            // Given:
+            // movies
+
+            // When:
+            boolean elementWasRemoved = movies.remove("The Simpsons Movie");
+
+            // Then:
+            assertTrue(elementWasRemoved);
+        }
+
+        @Test
+        void tryingToRemoveNonExistingElement() {
+            // Given:
+            // movies
+
+            // When:
+            boolean elementWasRemoved = movies.remove("Movie 404!");
+
+            // Then:
+            assertFalse(elementWasRemoved);
+        }
+
+        @Test
+        void printLinkedList() {
+            // Given:
+            // movies
+
+            // Then:
+            assertDoesNotThrow(() -> {
+                // When:
+                System.out.println(movies);
+            });
         }
     }
 }

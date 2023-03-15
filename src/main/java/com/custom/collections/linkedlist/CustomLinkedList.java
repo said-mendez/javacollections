@@ -188,10 +188,9 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         }
 
         ListNode<E> currentNode = head;
-        ListNode<E> removedNode = null;
+        ListNode<E> removedNode = head;
 
         if (index == 0) {
-            removedNode = currentNode;
             removingAtHead(currentNode);
             return removedNode.data;
         }
@@ -210,9 +209,6 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         }
         size--;
 
-        if (removedNode == null) {
-            return null;
-        }
         return removedNode.data;
     }
 
@@ -223,14 +219,14 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
 
         while (currentNode != null) {
             if (currentNode.data.equals(e)) {
-                if (currentNode.previousNode == null && currentNode.nextNode == null) {
+                if (currentNode.previousNode == null) {
                     removingAtHead(currentNode);
-                }
-                if (currentNode.nextNode == null) {
-                    removingAtEnd(currentNode);
                 }
                 if (currentNode.nextNode != null && currentNode.previousNode != null) {
                     removingAtMiddle(currentNode);
+                }
+                if (currentNode.nextNode == null) {
+                    removingAtEnd(currentNode);
                 }
 
                 elementWasRemoved = true;
@@ -248,9 +244,9 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
     }
 
     @Override
-    public String toString() {
+    public String toString() throws IllegalStateException{
         if (this.isEmpty()) {
-            return "The List is Empty!";
+            throw new IllegalStateException("The List is Empty!");
         }
         StringBuilder listToPrint = new StringBuilder("[");
         ListNode<E> currentNode = head;

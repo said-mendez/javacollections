@@ -154,7 +154,7 @@ public class CustomArrayListTest {
 
         @Test
         @DisplayName("Throws IllegalStateException")
-        void itThrowsIllegalStateExceptionOnEmptyArrayList() {
+        void setThrowsIllegalStateExceptionOnEmptyArrayList() {
             // Given:
             // customArrayList
 
@@ -178,7 +178,7 @@ public class CustomArrayListTest {
         }
 
         @Test
-        void itThrowsIllegalStateException() {
+        void indexOfThrowsIllegalStateException() {
             // Given:
             // customArrayList
 
