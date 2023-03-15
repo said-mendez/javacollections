@@ -54,7 +54,6 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void add(int index, E element) throws IndexOutOfBoundsException {
         if (size == 0 || index == size) {
             add(element);
@@ -64,35 +63,17 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
         }
         addCapacity();
 
-//        E [] tempArrayList = cloneArrayList();
-//        int tempIndex = 0;
-//        for (int i = 0; i <= tempArrayList.length; i++) {
-//            if (i == index) {
-//                arrayList[i] = element;
-//                arrayList[i+1] = tempArrayList[i++];
-//                size++;
-//            } else {
-//                arrayList[i] = tempArrayList[tempIndex];
-//            }
-//            tempIndex++;
-//        }
-
         // Todo: Add element without cloning
 
-        E[] tempArrayList = (E[]) new Object [arrayList.length];
-
-        for (int i = 0; i < size; i++) {
+        for (int i = size; i >= 0; i--) {
             if (i == index) {
-                tempArrayList[i] = element;
+                arrayList[i] = element;
+                break;
             }
-            if (i >= index) {
-                tempArrayList[i+1] = arrayList[i];
-            }
-            else {
-                tempArrayList[i] = arrayList[i];
+            if (i > index) {
+                arrayList[i] = arrayList[i-1];
             }
         }
-        arrayList = tempArrayList;
     }
 
     @Override

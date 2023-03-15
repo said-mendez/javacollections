@@ -56,10 +56,8 @@ public class CustomArrayListTest {
         // Given:
         CustomArrayList<String> songs = new CustomArrayList<>();
 
-        // Then:
+        // When: Then:
         assertDoesNotThrow(() -> {
-
-            // When:
             songs.add("Your Song");
             songs.add("One");
         });
