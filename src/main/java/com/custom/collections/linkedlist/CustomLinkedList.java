@@ -72,7 +72,7 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         boolean elementIsFound = false;
         ListNode<E> currentNode = head;
 
-        while (currentNode.nextNode != null && !elementIsFound) {
+        while (currentNode != null && !elementIsFound) {
             if (currentNode.data.equals(element)) {
                 elementIsFound = true;
             } else {
@@ -108,15 +108,17 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
             throw new IllegalStateException("The List is Empty!");
         }
 
-        int indexOfElement = 0;
+        int indexOfElement = -1;
+        int index = 0;
         ListNode<E> currentNode = head;
 
-        while(currentNode.nextNode != null) {
+        while(currentNode != null) {
             if (currentNode.data.equals(e)) {
+                indexOfElement = index;
                 break;
             }
             currentNode = currentNode.nextNode;
-            indexOfElement++;
+            index++;
         }
 
         return indexOfElement;
@@ -219,15 +221,15 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         boolean elementWasRemoved = false;
         ListNode<E> currentNode = head;
 
-        while (currentNode.nextNode != null) {
+        while (currentNode != null) {
             if (currentNode.data.equals(e)) {
-                if (currentNode.previousNode == null) {
+                if (currentNode.previousNode == null && currentNode.nextNode == null) {
                     removingAtHead(currentNode);
                 }
                 if (currentNode.nextNode == null) {
                     removingAtEnd(currentNode);
                 }
-                if (currentNode.nextNode != null) {
+                if (currentNode.nextNode != null && currentNode.previousNode != null) {
                     removingAtMiddle(currentNode);
                 }
 

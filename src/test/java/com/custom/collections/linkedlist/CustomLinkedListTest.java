@@ -113,6 +113,56 @@ public class CustomLinkedListTest {
             // Then:
             assertThrows(IllegalStateException.class, () -> customLinkedList.set(0, 100));
         }
+
+        @Test
+        void addThrowsIndexOutOfBounds() {
+            // Given
+            // customLinkedList
+
+            // When:
+            // customLinkedList.add(10, 100)
+
+            // Then:
+            assertThrows(IndexOutOfBoundsException.class, () -> customLinkedList.add(10, 100));
+        }
+
+        @Test
+        void addElementAtGivenIndex() {
+            // Given:
+            // customLinkedList
+            customLinkedList.add(100);
+            customLinkedList.add(200);
+            customLinkedList.add(300);
+            customLinkedList.add(400);
+
+            // When:
+            customLinkedList.add(2, 1234);
+
+            // Then:
+            assertEquals(1234, customLinkedList.get(2));
+        }
+
+        @Test
+        void getThrowsIllegalStateException() {
+            // Given:
+            // customLinkedList
+
+            // When:
+            // customLinkedList.get(0)
+
+            assertThrows(IllegalStateException.class, () -> customLinkedList.get(0));
+        }
+
+        @Test
+        void indexOfThrowsIllegalStateException() {
+            // Given:
+            // customLinkedList
+
+            // When:
+            // customLinkedList.indexOf("The Greatest Showman")
+
+            assertThrows(IllegalStateException.class, () -> customLinkedList.indexOf(7));
+        }
     }
 
     @Nested
@@ -147,7 +197,7 @@ public class CustomLinkedListTest {
             // movies
 
             // When:
-            boolean containsElement = movies.contains("Top Gun");
+            boolean containsElement = movies.contains("Matrix");
 
             // Then:
             assertTrue(containsElement);
@@ -244,13 +294,75 @@ public class CustomLinkedListTest {
 
         @Test
         void hasIterator() {
+            // Then:
             assertDoesNotThrow(() -> {
+                // Given:
                 CustomListIterator<String> iterator = movies.iterator();
+
+                // When
                 while(iterator.hasNext()) {
                     String movie = iterator.next();
                     System.out.println(movie);
                 }
             });
+        }
+
+        @Test
+        void indexOfReturnsIndexOfElement() {
+            // Given:
+            // movies
+
+            // When:
+            int indexOf = movies.indexOf("Matrix");
+
+            assertEquals(0, indexOf);
+        }
+
+        @Test
+        void indexOfReturnsMinusOneWhenElementDoesNotExists() {
+            // Given:
+            // movies
+
+            // When:
+            int indexOf = movies.indexOf("Top Gun Maverick");
+
+            assertEquals(-1, indexOf);
+        }
+
+        @Test
+        void removeLastElement() {
+            // Given:
+            // movies
+
+            // When:
+            boolean elementWasRemoved = movies.remove("Top Gun");
+
+            // Then:
+            assertTrue(elementWasRemoved);
+        }
+
+        @Test
+        void removeLastIndex() {
+            // Given:
+            // movies
+
+            // When:
+            String removedElement = movies.remove(4);
+
+            // Then:
+            assertEquals("The Simpsons Movie", removedElement);
+        }
+
+        @Test
+        void getMiddle() {
+            // Given:
+            // movies
+
+            // When:
+            String movieName = movies.get(2);
+
+            // Then:
+            assertEquals("Harry Potter and the Philosopher's Stone", movieName);
         }
     }
 }
