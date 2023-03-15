@@ -1,6 +1,8 @@
-package com.custom.collections;
+package com.custom.collections.arraylist;
 
-public class CustomArrayListIterator<E> implements CustomListIterator<E> {
+import com.custom.collections.CustomListIterator;
+
+class CustomArrayListIterator<E> implements CustomListIterator<E> {
     private int currentIndex = 0;
     private final int size;
     private final CustomArrayList<E> arrayList;
@@ -12,7 +14,7 @@ public class CustomArrayListIterator<E> implements CustomListIterator<E> {
 
     @Override
     public boolean hasNext() {
-        return currentIndex < this.size;
+        return currentIndex < size;
     }
 
     @Override

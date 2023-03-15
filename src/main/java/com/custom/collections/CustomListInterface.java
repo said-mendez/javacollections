@@ -22,7 +22,7 @@ public interface CustomListInterface<E> {
     // Removes all the elements from this list (optional operation).
     void clear();
     // Removes the element at the specified position in this list (optional operation).
-    Object remove(int index) throws IllegalStateException;
+    E remove(int index) throws IllegalStateException;
     // Removes the first occurrence of the specified element from this list, if it is present (optional operation).
     boolean remove(E e);
     // List iterator

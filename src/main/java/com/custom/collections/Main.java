@@ -1,5 +1,7 @@
 package com.custom.collections;
 
+import com.custom.collections.linkedlist.CustomLinkedList;
+
 public class Main {
     public static void main(String[] args) {
         CustomListInterface<String> movies = new CustomLinkedList<>();
@@ -35,6 +37,7 @@ public class Main {
             String movie = iterator.next();
             System.out.println(movie);
         }
+
 
 //        CustomArrayList<Integer> numbers = new CustomArrayList<>(3);
 //
