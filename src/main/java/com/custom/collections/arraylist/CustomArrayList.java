@@ -37,7 +37,7 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
             int newCapacity = size * 2;
             E[] tempArrayList = (E[]) new Object [newCapacity];
 
-            System.arraycopy(tempArrayList, 0, arrayList, 0, size);
+            System.arraycopy(arrayList, 0, tempArrayList, 0, size);
             arrayList = tempArrayList;
         }
     }
@@ -65,15 +65,10 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
 
         // Todo: Add element without cloning
 
-        for (int i = size; i >= 0; i--) {
-            if (i == index) {
-                arrayList[i] = element;
-                break;
-            }
-            if (i > index) {
-                arrayList[i] = arrayList[i-1];
-            }
+        for (int i = size; i > index; i--) {
+            arrayList[i] = arrayList[i-1];
         }
+        arrayList[index] = element;
     }
 
     @Override
