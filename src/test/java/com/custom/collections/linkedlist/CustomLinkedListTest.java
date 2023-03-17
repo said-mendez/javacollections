@@ -311,7 +311,7 @@ public class CustomLinkedListTest {
                 // Given:
                 CustomListIterator<String> iterator = movies.iterator();
 
-                // When
+                // When:
                 while(iterator.hasNext()) {
                     String movie = iterator.next();
                     System.out.println(movie);
