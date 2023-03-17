@@ -18,5 +18,5 @@ public interface Set<E> {
     // Equals
     boolean equals(Object o);
     // set iterator
-    // CustomSetIterator<E> iterator();
+    CustomListIterator<E> iterator();
 }
