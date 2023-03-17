@@ -6,12 +6,12 @@ class CustomLinkedListIterator<E> implements CustomListIterator<E> {
     private ListNode<E> currentNode;
 
     public CustomLinkedListIterator(ListNode<E> head) {
-        this.currentNode = head;
+        currentNode = head;
     }
 
     @Override
     public boolean hasNext() {
-        return this.currentNode != null;
+        return currentNode != null;
     }
 
     @Override
