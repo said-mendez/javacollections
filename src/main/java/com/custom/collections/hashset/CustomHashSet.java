@@ -15,6 +15,7 @@ public class CustomHashSet<E> implements Set<E> {
     //  TODO: I've created the hashCode using the entryValue property, is this OK?
     private E entryValue;
 
+    // TODO: delete capacity
     private void initializeBuckets(int capacity) {
         buckets = new CustomLinkedList[capacity];
         this.capacity = capacity;
@@ -41,7 +42,6 @@ public class CustomHashSet<E> implements Set<E> {
         buckets = new CustomLinkedList[capacity];
         size = 0;
 
-        // TODO: restructure bucket before assigning
         // Loop through each element in tempBucketCopy and assign it to buckets with the new hashCode
         // We have a O(M*N) where M is the capacity and N is the list length
         for (CustomLinkedList<E> linkedList : tempBucketsCopy) {
@@ -89,17 +89,17 @@ public class CustomHashSet<E> implements Set<E> {
     public boolean contains(E element) {
         entryValue = element;
         int hashCodeMod = getHashCodeModulus();
-
-        // TODO: Checking if the element exists directly in the list is the same as using class equals?
-        // System.out.println(buckets[hashCodeMod].contains(element));
-
-        CustomListIterator<E> iterator = buckets[hashCodeMod].iterator();
         boolean elementWasFound = false;
 
-        while(iterator.hasNext() && !elementWasFound ) {
-            E elementInList = iterator.next();
-            if (entryValue.equals(elementInList)) {
-                elementWasFound = true;
+        if (buckets[hashCodeMod] != null) {
+            // TODO: Checking if the element exists directly in the list is the same as using class equals?
+            CustomListIterator<E> iterator = buckets[hashCodeMod].iterator();
+
+            while(iterator.hasNext() && !elementWasFound ) {
+                E elementInList = iterator.next();
+                if (entryValue == null || entryValue.equals(elementInList)) {
+                    elementWasFound = true;
+                }
             }
         }
 
@@ -116,7 +116,7 @@ public class CustomHashSet<E> implements Set<E> {
         return size;
     }
 
-    // TODO: If we clear the buckets array, the linked lists will be garbage collected?
+    // TODO: If we reference buckets to a new object will be garbage collected?
     @Override
     public void clear() {
         capacity = INITIAL_CAPACITY;
@@ -160,8 +160,44 @@ public class CustomHashSet<E> implements Set<E> {
         return new CustomHashSetIterator<>(buckets, size);
     }
 
+    // TODO: delete hashcode in hashset
     @Override
     public int hashCode() {
         return entryValue != null ? entryValue.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() throws IllegalStateException{
+        if (this.isEmpty()) {
+            throw new IllegalStateException("The List is Empty!");
+        }
+
+        StringBuilder completeHashSet = new StringBuilder();
+        int bucketNumber = 0;
+
+        for (CustomLinkedList<E> linkedList : buckets) {
+            StringBuilder listToPrint = new StringBuilder("[");
+            String bucketHeader = "\nBucket: " + bucketNumber + "\n";
+            completeHashSet.append(bucketHeader);
+
+            if (linkedList != null) {
+                CustomListIterator<E> iterator = linkedList.iterator();
+                while(iterator.hasNext()) {
+                    listToPrint.append(iterator.next()).append(", ");
+                }
+            }
+
+            if (listToPrint.length() > 1) {
+                listToPrint = new StringBuilder(listToPrint.substring(0, listToPrint.length() - 2) + "]");
+                completeHashSet.append(listToPrint);
+            }
+            bucketNumber++;
+        }
+
+        return completeHashSet.toString();
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 }

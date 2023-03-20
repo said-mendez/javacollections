@@ -20,22 +20,27 @@ public class CustomHashSetIterator<E> implements CustomListIterator<E> {
 
     @Override
     public E next() {
-        E nextElement = null;
+        E nextElement;
 
-        if (buckets[arrayCurrentIndex] != null) {
-            CustomLinkedList<E> linkedList = buckets[arrayCurrentIndex];
-
-            nextElement = linkedList.get(linkedListElementIndex);
-            linkedListElementIndex++;
-            numberOfElementsReturned++;
-
-            // When we reach the last element in the list, then we can pass to the next index in the buckets array
-            if (linkedListElementIndex == linkedList.size()) {
-                arrayCurrentIndex++;
-                // Reset linkedListElementIndex as we will start with a new list
-                linkedListElementIndex = 0;
-            }
+        if (buckets[arrayCurrentIndex] == null && hasNext()) {
+            arrayCurrentIndex++;
+            return next();
         }
+
+        // TODO: Change structure to ArrayList
+        CustomLinkedList<E> linkedList = buckets[arrayCurrentIndex];
+
+        nextElement = linkedList.get(linkedListElementIndex);
+        linkedListElementIndex++;
+        numberOfElementsReturned++;
+
+        // When we reach the last element in the list, then we can pass to the next index in the buckets array
+        if (linkedListElementIndex == linkedList.size()) {
+            arrayCurrentIndex++;
+            // Reset linkedListElementIndex as we will start with a new list
+            linkedListElementIndex = 0;
+        }
+
         return nextElement;
     }
 }

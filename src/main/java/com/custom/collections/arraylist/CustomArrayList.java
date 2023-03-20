@@ -63,8 +63,6 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
         }
         addCapacity();
 
-        // Todo: Add element without cloning
-
         for (int i = size; i > index; i--) {
             arrayList[i] = arrayList[i-1];
         }
