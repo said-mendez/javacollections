@@ -14,5 +14,5 @@ public interface Set<E> {
     // Removes the first occurrence of the specified element from this set, if it is present (optional operation).
     boolean remove(E e);
     // Set iterator
-    CustomListIterator<E> iterator();
+    CustomIterator<E> iterator();
 }

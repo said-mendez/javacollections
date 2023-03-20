@@ -1,6 +1,6 @@
 package com.custom.collections.linkedlist;
 
-import com.custom.collections.CustomListIterator;
+import com.custom.collections.CustomIterator;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -309,7 +309,7 @@ public class CustomLinkedListTest {
             // Then:
             assertDoesNotThrow(() -> {
                 // Given:
-                CustomListIterator<String> iterator = movies.iterator();
+                CustomIterator<String> iterator = movies.iterator();
 
                 // When:
                 while(iterator.hasNext()) {

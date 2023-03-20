@@ -26,5 +26,5 @@ public interface CustomListInterface<E> {
     // Removes the first occurrence of the specified element from this list, if it is present (optional operation).
     boolean remove(E e);
     // List iterator
-    CustomListIterator<E> iterator();
+    CustomIterator<E> iterator();
 }

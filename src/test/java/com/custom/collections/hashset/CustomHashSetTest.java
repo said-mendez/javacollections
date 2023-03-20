@@ -1,6 +1,6 @@
 package com.custom.collections.hashset;
 
-import com.custom.collections.CustomListIterator;
+import com.custom.collections.CustomIterator;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -241,7 +241,7 @@ public class CustomHashSetTest {
 
         // When: Then:
         assertDoesNotThrow(() -> {
-            CustomListIterator<String> iterator = movies.iterator();
+            CustomIterator<String> iterator = movies.iterator();
             while(iterator.hasNext()) {
                 String movie = iterator.next();
                 System.out.println(movie);

@@ -1,7 +1,7 @@
 package com.custom.collections.linkedlist;
 
 import com.custom.collections.CustomListInterface;
-import com.custom.collections.CustomListIterator;
+import com.custom.collections.CustomIterator;
 
 public class CustomLinkedList<E> implements CustomListInterface<E> {
     private ListNode<E> head;
@@ -239,7 +239,7 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         return elementWasRemoved;
     }
 
-    public CustomListIterator<E> iterator() {
+    public CustomIterator<E> iterator() {
         return new CustomLinkedListIterator<>(head);
     }
 

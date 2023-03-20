@@ -1,6 +1,6 @@
 package com.custom.collections;
 
-public interface CustomListIterator<E>{
+public interface CustomIterator<E>{
     boolean hasNext();
     E next();
 }

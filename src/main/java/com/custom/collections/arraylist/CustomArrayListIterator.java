@@ -1,8 +1,8 @@
 package com.custom.collections.arraylist;
 
-import com.custom.collections.CustomListIterator;
+import com.custom.collections.CustomIterator;
 
-class CustomArrayListIterator<E> implements CustomListIterator<E> {
+class CustomArrayListIterator<E> implements CustomIterator<E> {
     private int currentIndex = 0;
     private final int size;
     private final CustomArrayList<E> arrayList;

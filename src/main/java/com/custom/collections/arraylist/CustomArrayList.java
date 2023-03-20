@@ -1,7 +1,7 @@
 package com.custom.collections.arraylist;
 
 import com.custom.collections.CustomListInterface;
-import com.custom.collections.CustomListIterator;
+import com.custom.collections.CustomIterator;
 
 public class CustomArrayList<E> implements CustomListInterface<E> {
     private int size = 0;
@@ -189,7 +189,7 @@ public class CustomArrayList<E> implements CustomListInterface<E> {
         return true;
     }
 
-    public CustomListIterator<E> iterator() {
+    public CustomIterator<E> iterator() {
         return new CustomArrayListIterator<>(this, size);
     }
 

@@ -1,14 +1,14 @@
 package com.custom.collections.hashset;
 
-import com.custom.collections.CustomListIterator;
-import com.custom.collections.linkedlist.CustomLinkedList;
+import com.custom.collections.CustomIterator;
+import com.custom.collections.arraylist.CustomArrayList;
 
-public class CustomHashSetIterator<E> implements CustomListIterator<E> {
+public class CustomHashSetIterator<E> implements CustomIterator<E> {
     private int arrayCurrentIndex = 0, linkedListElementIndex = 0, numberOfElementsReturned = 0;
     private final int numberOfElements;
-    private final CustomLinkedList<E>[] buckets;
+    private final CustomArrayList<E>[] buckets;
 
-    public CustomHashSetIterator(CustomLinkedList<E>[] buckets, int size) {
+    public CustomHashSetIterator(CustomArrayList<E>[] buckets, int size) {
         this.buckets = buckets;
         numberOfElements = size;
     }
@@ -27,15 +27,14 @@ public class CustomHashSetIterator<E> implements CustomListIterator<E> {
             return next();
         }
 
-        // TODO: Change structure to ArrayList
-        CustomLinkedList<E> linkedList = buckets[arrayCurrentIndex];
+        CustomArrayList<E> arrayList = buckets[arrayCurrentIndex];
 
-        nextElement = linkedList.get(linkedListElementIndex);
+        nextElement = arrayList.get(linkedListElementIndex);
         linkedListElementIndex++;
         numberOfElementsReturned++;
 
         // When we reach the last element in the list, then we can pass to the next index in the buckets array
-        if (linkedListElementIndex == linkedList.size()) {
+        if (linkedListElementIndex == arrayList.size()) {
             arrayCurrentIndex++;
             // Reset linkedListElementIndex as we will start with a new list
             linkedListElementIndex = 0;

@@ -1,8 +1,8 @@
 package com.custom.collections.linkedlist;
 
-import com.custom.collections.CustomListIterator;
+import com.custom.collections.CustomIterator;
 
-class CustomLinkedListIterator<E> implements CustomListIterator<E> {
+class CustomLinkedListIterator<E> implements CustomIterator<E> {
     private ListNode<E> currentNode;
 
     public CustomLinkedListIterator(ListNode<E> head) {
