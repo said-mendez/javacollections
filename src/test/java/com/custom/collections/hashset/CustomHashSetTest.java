@@ -250,6 +250,35 @@ public class CustomHashSetTest {
     }
 
     @Test
+    void removeElements(){
+        // Given:
+        CustomHashSet<String> movies = new CustomHashSet<>();
+        movies.add("Matrix");
+        movies.add("Space Jam");
+        movies.add("Harry Potter and the Philosopher's Stone");
+        movies.add("Top Gun");
+        movies.add("The Simpsons Movie");
+        movies.add("Pokemon 2000");
+        movies.add("Star Wars: Clone Wars");
+        movies.add("Star Wars: The Revenge of the Sith");
+        movies.add("The Lord of the Rings The Two Towers");
+        movies.add("Men of Honor");
+        movies.add("Interstellar");
+        movies.add("Inception");
+        movies.add("Shutter Island");
+        movies.add("The Wall Street Wolf");
+        movies.add("The Dark Knight Rises");
+        movies.add("Peaceful Warrior");
+
+        // When:
+        boolean removedElement = movies.remove("The Lord of the Rings The Two Towers");
+
+        // Then:
+        assertTrue(removedElement);
+        assertFalse(movies.contains("The Lord of the Rings The Two Towers"));
+    }
+
+    @Test
     void printHashSet() {
         // Given:
         CustomHashSet<String> movies = new CustomHashSet<>();

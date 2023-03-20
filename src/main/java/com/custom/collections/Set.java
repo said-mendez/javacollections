@@ -13,10 +13,6 @@ public interface Set<E> {
     void clear();
     // Removes the first occurrence of the specified element from this set, if it is present (optional operation).
     boolean remove(E e);
-    // Returns the hash code value for this set.
-    int hashCode();
-    // Equals
-    boolean equals(Object o);
-    // set iterator
+    // Set iterator
     CustomListIterator<E> iterator();
 }

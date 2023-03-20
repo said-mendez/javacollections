@@ -4,21 +4,16 @@ import com.custom.collections.CustomListIterator;
 import com.custom.collections.Set;
 import com.custom.collections.linkedlist.CustomLinkedList;
 
-import java.util.Objects;
-
 import static java.lang.Math.abs;
 
 public class CustomHashSet<E> implements Set<E> {
-    private int size = 0, capacity;
+    private int size = 0;
     private static final int INITIAL_CAPACITY = 3, MAX_ELEMENTS_IN_LIST = 4;
     private CustomLinkedList<E>[] buckets;
-    //  TODO: I've created the hashCode using the entryValue property, is this OK?
-    private E entryValue;
 
-    // TODO: delete capacity
+    @SuppressWarnings("unchecked")
     private void initializeBuckets(int capacity) {
         buckets = new CustomLinkedList[capacity];
-        this.capacity = capacity;
     }
 
     CustomHashSet() {
@@ -29,17 +24,20 @@ public class CustomHashSet<E> implements Set<E> {
         initializeBuckets(capacity);
     }
 
-    private int getHashCodeModulus() {
-        return abs(hashCode() % capacity);
+    private int getHashCodeModulus(E element) {
+        if (element == null) {
+            return 0;
+        }
+        return abs(element.hashCode() % buckets.length);
     }
 
+    @SuppressWarnings("unchecked")
     private void addBucketsCapacity() {
-        E pendingValueToAdd = entryValue;
-        capacity *= 2;
-        CustomLinkedList<E>[] tempBucketsCopy = new CustomLinkedList[capacity];
+        int newCapacity = buckets.length * 2;
+        CustomLinkedList<E>[] tempBucketsCopy = new CustomLinkedList[newCapacity];
 
         System.arraycopy(buckets, 0, tempBucketsCopy, 0, buckets.length);
-        buckets = new CustomLinkedList[capacity];
+        buckets = new CustomLinkedList[newCapacity];
         size = 0;
 
         // Loop through each element in tempBucketCopy and assign it to buckets with the new hashCode
@@ -52,30 +50,26 @@ public class CustomHashSet<E> implements Set<E> {
                 }
             }
         }
-        add(pendingValueToAdd);
     }
 
     @Override
     public boolean add(E element) {
-        entryValue = element;
-        int hashCodeMod = getHashCodeModulus();
+        int hashCodeMod = getHashCodeModulus(element);
         boolean elementWasAdded = false;
 
         // TODO: validate the size of the list and simplify inner else if
         // Add element when the bucket does not have elements
         if (buckets[hashCodeMod] == null) {
             CustomLinkedList<E> newList = new CustomLinkedList<>();
-            newList.add(entryValue);
+            newList.add(element);
             buckets[hashCodeMod] = newList;
             elementWasAdded = true;
-        }
-        // Add when bucket already have elements
-        if (!contains(entryValue) && buckets[hashCodeMod].size() < MAX_ELEMENTS_IN_LIST) {
-            buckets[hashCodeMod].add(entryValue);
+        } else if (!contains(element) && buckets[hashCodeMod].size() < MAX_ELEMENTS_IN_LIST) {
+            buckets[hashCodeMod].add(element);
             elementWasAdded = true;
-        }
-        if (!contains(entryValue) && buckets[hashCodeMod].size() >= MAX_ELEMENTS_IN_LIST) {
+        } else if (!contains(element) && buckets[hashCodeMod].size() >= MAX_ELEMENTS_IN_LIST) {
             addBucketsCapacity();
+            add(element);
         }
 
         if (elementWasAdded) {
@@ -87,17 +81,15 @@ public class CustomHashSet<E> implements Set<E> {
 
     @Override
     public boolean contains(E element) {
-        entryValue = element;
-        int hashCodeMod = getHashCodeModulus();
+        int hashCodeMod = getHashCodeModulus(element);
         boolean elementWasFound = false;
 
         if (buckets[hashCodeMod] != null) {
-            // TODO: Checking if the element exists directly in the list is the same as using class equals?
             CustomListIterator<E> iterator = buckets[hashCodeMod].iterator();
 
             while(iterator.hasNext() && !elementWasFound ) {
                 E elementInList = iterator.next();
-                if (entryValue == null || entryValue.equals(elementInList)) {
+                if (element == null || element.equals(elementInList)) {
                     elementWasFound = true;
                 }
             }
@@ -116,11 +108,10 @@ public class CustomHashSet<E> implements Set<E> {
         return size;
     }
 
-    // TODO: If we reference buckets to a new object will be garbage collected?
+    @SuppressWarnings("unchecked")
     @Override
     public void clear() {
-        capacity = INITIAL_CAPACITY;
-        buckets = new CustomLinkedList[capacity];
+        buckets = new CustomLinkedList[INITIAL_CAPACITY];
         size = 0;
     }
 
@@ -129,15 +120,15 @@ public class CustomHashSet<E> implements Set<E> {
         if (isEmpty()) {
             throw new IllegalStateException("HashSet is empty!");
         }
-        entryValue = e;
-        int hashCodeMod = getHashCodeModulus();
+
+        int hashCodeMod = getHashCodeModulus(e);
 
         CustomListIterator<E> iterator = buckets[hashCodeMod].iterator();
         boolean elementWasRemoved = false;
 
         while(iterator.hasNext()) {
             E elementInList = iterator.next();
-            if (entryValue.equals(elementInList)) {
+            if (e.equals(elementInList)) {
                 elementWasRemoved = buckets[hashCodeMod].remove(e);
             }
         }
@@ -146,24 +137,8 @@ public class CustomHashSet<E> implements Set<E> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        CustomHashSet<?> that = (CustomHashSet<?>) o;
-
-        return Objects.equals(entryValue, that.entryValue);
-    }
-
-    @Override
     public CustomListIterator<E> iterator() {
         return new CustomHashSetIterator<>(buckets, size);
-    }
-
-    // TODO: delete hashcode in hashset
-    @Override
-    public int hashCode() {
-        return entryValue != null ? entryValue.hashCode() : 0;
     }
 
     @Override
@@ -198,6 +173,6 @@ public class CustomHashSet<E> implements Set<E> {
     }
 
     public int getCapacity() {
-        return capacity;
+        return buckets.length;
     }
 }
