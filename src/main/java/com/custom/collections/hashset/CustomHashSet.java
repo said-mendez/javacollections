@@ -16,11 +16,11 @@ public class CustomHashSet<E> implements Set<E> {
         buckets = new CustomArrayList[capacity];
     }
 
-    CustomHashSet() {
+    public CustomHashSet() {
         initializeBuckets(INITIAL_CAPACITY);
     }
 
-    CustomHashSet(int capacity) {
+    public CustomHashSet(int capacity) {
         initializeBuckets(capacity);
     }
 
@@ -46,18 +46,16 @@ public class CustomHashSet<E> implements Set<E> {
             if (arrayList != null) {
                 CustomIterator<E> iterator = arrayList.iterator();
                 while(iterator.hasNext()) {
-                    add(iterator.next());
+                    addRecursive(iterator.next());
                 }
             }
         }
     }
 
-    @Override
-    public boolean add(E element) {
+    public boolean addRecursive(E element) {
         int hashCodeMod = getHashCodeModulus(element);
         boolean elementWasAdded = false;
 
-        // TODO: validate the size of the list and simplify inner else if
         // Add element when the bucket does not have elements
         if (buckets[hashCodeMod] == null) {
             CustomArrayList<E> newArray = new CustomArrayList<>();
@@ -75,6 +73,31 @@ public class CustomHashSet<E> implements Set<E> {
         if (elementWasAdded) {
             size++;
         }
+
+        return elementWasAdded;
+    }
+
+    @Override
+    public boolean add(E element) {
+        boolean elementWasAdded = addRecursive(element);
+
+//        // Add element when the bucket does not have elements
+//        if (buckets[hashCodeMod] == null) {
+//            CustomArrayList<E> newArray = new CustomArrayList<>();
+//            newArray.add(element);
+//            buckets[hashCodeMod] = newArray;
+//            elementWasAdded = true;
+//        } else if (!contains(element) && buckets[hashCodeMod].size() < MAX_ELEMENTS_IN_LIST) {
+//            buckets[hashCodeMod].add(element);
+//            elementWasAdded = true;
+//        } else if (!contains(element) && buckets[hashCodeMod].size() >= MAX_ELEMENTS_IN_LIST) {
+//            addBucketsCapacity();
+//            add(element);
+//        }
+//
+//        if (elementWasAdded) {
+//            size++;
+//        }
 
         return elementWasAdded;
     }
@@ -134,6 +157,10 @@ public class CustomHashSet<E> implements Set<E> {
             }
         }
 
+        if (elementWasRemoved) {
+            size--;
+        }
+
         return elementWasRemoved;
     }
 
@@ -143,9 +170,9 @@ public class CustomHashSet<E> implements Set<E> {
     }
 
     @Override
-    public String toString() throws IllegalStateException{
+    public String toString(){
         if (this.isEmpty()) {
-            throw new IllegalStateException("The List is Empty!");
+            return "[]";
         }
 
         StringBuilder completeHashSet = new StringBuilder();

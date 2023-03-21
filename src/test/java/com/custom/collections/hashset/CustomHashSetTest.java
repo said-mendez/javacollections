@@ -6,17 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomHashSetTest {
     @Test
-    void permitsAddingNullValues() {
-        // Given:
-        CustomHashSet<String> movies = new CustomHashSet<>();
-
-        // When:
-        movies.add(null);
-
-        // Then:
-        assertTrue(movies.contains(null));
-    }
-    @Test
     public void itKeepsTrackOfTheSizeAndIncreasesCapacityWhenNeeded() {
         // Given:
         CustomHashSet<String> movies = new CustomHashSet<>();
@@ -63,7 +52,6 @@ public class CustomHashSetTest {
         assertEquals(movies.size(), 16);
         assertTrue(initialCapacity < finalCapacity);
     }
-
     @Test
     @DisplayName("Is empty")
     void whenCustomHashSetIsNewIsEmpty() {
@@ -126,6 +114,18 @@ public class CustomHashSetTest {
 
         // Then:
         assertTrue(elementIsContained);
+    }
+
+    @Test
+    void permitsAddingNullValues() {
+        // Given:
+        CustomHashSet<String> movies = new CustomHashSet<>();
+
+        // When:
+        movies.add(null);
+
+        // Then:
+        assertTrue(movies.contains(null));
     }
 
     @Test
@@ -276,6 +276,7 @@ public class CustomHashSetTest {
         // Then:
         assertTrue(removedElement);
         assertFalse(movies.contains("The Lord of the Rings The Two Towers"));
+        assertEquals(15, movies.size());
     }
 
     @Test
@@ -304,11 +305,11 @@ public class CustomHashSetTest {
     }
 
     @Test
-    void printThrowsIllegalStateException() {
+    void printEmptyHashSet() {
         // Given
         CustomHashSet<String> movies = new CustomHashSet<>();
 
         // When: Then:
-        assertThrows(IllegalStateException.class, () -> System.out.println(movies));
+        assertDoesNotThrow(() -> System.out.println(movies));
     }
 }
