@@ -79,7 +79,6 @@ public class CustomHashSet<E> implements Set<E> {
 
     @Override
     public boolean add(E element) {
-        boolean elementWasAdded = addRecursive(element);
 
 //        // Add element when the bucket does not have elements
 //        if (buckets[hashCodeMod] == null) {
@@ -99,7 +98,7 @@ public class CustomHashSet<E> implements Set<E> {
 //            size++;
 //        }
 
-        return elementWasAdded;
+        return addRecursive(element);
     }
 
     @Override
