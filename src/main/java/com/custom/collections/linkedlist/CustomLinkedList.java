@@ -163,7 +163,7 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         size = 0;
     }
 
-    public void removingAtHead(ListNode<E> currentNode) {
+    private void removingAtHead(ListNode<E> currentNode) {
         if (size == 1) {
             head = null;
         } else {
@@ -173,14 +173,14 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         }
     }
 
-    public void removingAtMiddle(ListNode<E> currentNode) {
+    private void removingAtMiddle(ListNode<E> currentNode) {
         ListNode<E> previousNode = currentNode.previousNode;
         ListNode<E> nextNode = currentNode.nextNode;
         previousNode.nextNode = nextNode;
         nextNode.previousNode = previousNode;
     }
 
-    public void removingAtEnd(ListNode<E> currentNode) {
+    private void removingAtEnd(ListNode<E> currentNode) {
         ListNode<E> previousNode = currentNode.previousNode;
         if (previousNode != null) {
             previousNode.nextNode = null;

@@ -66,6 +66,20 @@ public class CustomLinkedListTest {
         });
     }
 
+    @Test
+    public void removeElementWhenSizeIsOne() {
+        // Given:
+        CustomLinkedList<String> songs = new CustomLinkedList<>();
+        songs.add("The Unforgiven");
+
+        // When:
+        boolean elementWasRemoved = songs.remove("The Unforgiven");
+
+        // Then:
+        assertTrue(elementWasRemoved);
+
+    }
+
     @Nested
     @DisplayName("When new")
     class WhenNew {
@@ -162,18 +176,6 @@ public class CustomLinkedListTest {
             // customLinkedList.indexOf("The Greatest Showman")
 
             assertThrows(IllegalStateException.class, () -> customLinkedList.indexOf(7));
-        }
-
-        @Test
-        void toStringThrowsIllegalStateException() {
-            // Given:
-            // customLinkedList
-
-            // When:
-            // System.out.println(customLinkedList);
-
-            // Then:
-            assertThrows(IllegalStateException.class, () -> System.out.println(customLinkedList));
         }
     }
 
@@ -459,6 +461,18 @@ public class CustomLinkedListTest {
             assertDoesNotThrow(() -> {
                 // When:
                 System.out.println(movies);
+            });
+        }
+
+        @Test
+        void printEmptyLinkedList() {
+            // Given:
+            CustomLinkedList<String> linkedList = new CustomLinkedList<>();
+
+            // Then:
+            assertDoesNotThrow(() -> {
+                // When:
+                System.out.println(linkedList);
             });
         }
     }
