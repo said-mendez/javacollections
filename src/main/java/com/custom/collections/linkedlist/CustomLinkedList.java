@@ -4,7 +4,7 @@ import com.custom.collections.CustomListInterface;
 import com.custom.collections.CustomIterator;
 
 public class CustomLinkedList<E> implements CustomListInterface<E> {
-    private ListNode<E> head;
+    private ListNode<E> head, tails;
     private int size;
 
     public CustomLinkedList() {
@@ -21,16 +21,12 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         if (head == null) {
             head = newNode;
         } else {
-            ListNode<E> currentNode = head;
-
-            // We can avoid looping this if we keep track of the tail
-            while (currentNode.nextNode != null) {
-                currentNode = currentNode.nextNode;
-            }
+            ListNode<E> currentNode = tails;
 
             currentNode.nextNode = newNode;
             newNode.previousNode = currentNode;
         }
+        tails = newNode;
 
         size++;
         return true;
@@ -40,7 +36,9 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
     public void add(int index, E element) throws IndexOutOfBoundsException {
         if (index == size) {
             add(element);
+            return;
         }
+
         if (isIndexOutOfBounds(index)) {
             throw new IndexOutOfBoundsException("Index Out Of Bounds!!");
         }
@@ -166,6 +164,7 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
     private void removingAtHead(ListNode<E> currentNode) {
         if (size == 1) {
             head = null;
+            tails = null;
         } else {
             ListNode<E> nextNode = currentNode.nextNode;
             nextNode.previousNode = null;
@@ -184,6 +183,7 @@ public class CustomLinkedList<E> implements CustomListInterface<E> {
         ListNode<E> previousNode = currentNode.previousNode;
         if (previousNode != null) {
             previousNode.nextNode = null;
+            tails = previousNode;
         }
     }
 
