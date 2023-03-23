@@ -51,7 +51,8 @@ public class CustomHashMap<K, V> implements CustomMap<K, V> {
 
     @Override
     public void clear() {
-
+        buckets = new CustomLinkedList[INITIAL_CAPACITY];
+        size = 0;
     }
 
     @Override
@@ -69,22 +70,78 @@ public class CustomHashMap<K, V> implements CustomMap<K, V> {
 
             while (iterator.hasNext() && !keyWasFound) {
                 MapEntry<K, V> entry = iterator.next();
-                if (entry == null || entry.key.equals(key)) {
+                if (entry.key == null || entry.key.equals(key)) {
                     keyWasFound = true;
                 }
             }
         }
-        return false;
+
+        return keyWasFound;
     }
 
     @Override
     public boolean containsValue(V value) {
-        return false;
+        boolean valueWasFound = false;
+
+        for (CustomLinkedList<MapEntry<K, V>> linkedList : buckets) {
+            if (linkedList != null) {
+                CustomIterator<MapEntry<K, V>> iterator = linkedList.iterator();
+
+                while(iterator.hasNext() && !valueWasFound) {
+                    MapEntry<K, V> entry = iterator.next();
+                    if (value.equals(entry.value)) {
+                        valueWasFound = true;
+                    }
+                }
+            }
+
+            if (valueWasFound) {
+                break;
+            }
+        }
+
+        return valueWasFound;
+    }
+
+    private MapEntry<K, V> getMapEntry(K key) {
+        int hashCodeMod = getHashCodeModulus(key);
+        boolean keyWasFound = false;
+        MapEntry<K, V> mapEntry = null;
+
+        if (buckets[hashCodeMod] != null) {
+            CustomIterator<MapEntry<K, V>> iterator = buckets[hashCodeMod].iterator();
+
+            while (iterator.hasNext() && !keyWasFound) {
+                MapEntry<K, V> entry = iterator.next();
+                if (entry.key == null || entry.key.equals(key)) {
+                    mapEntry = entry;
+                    keyWasFound = true;
+                }
+            }
+        }
+
+        return mapEntry;
     }
 
     @Override
     public V get(K key) {
-        return null;
+        int hashCodeMod = getHashCodeModulus(key);
+        boolean keyWasFound = false;
+        V value = null;
+
+        if (buckets[hashCodeMod] != null) {
+            CustomIterator<MapEntry<K, V>> iterator = buckets[hashCodeMod].iterator();
+
+            while (iterator.hasNext() && !keyWasFound) {
+                MapEntry<K, V> entry = iterator.next();
+                if (entry.key == null || entry.key.equals(key)) {
+                    value = entry.value;
+                    keyWasFound = true;
+                }
+            }
+        }
+
+        return value;
     }
 
     @Override
@@ -92,12 +149,8 @@ public class CustomHashMap<K, V> implements CustomMap<K, V> {
         return size == 0;
     }
 
-    @Override
-    public V put(K key, V value) {
-        return putRecursive(key, value);
-    }
-
-    public V putRecursive(K key, V value) {
+    // TODO: case when the key already exists
+    private V putRecursive(K key, V value) {
         int hashCodeMod = getHashCodeModulus(key);
         boolean elementWasAdded = false;
         MapEntry<K, V> newEntry = new MapEntry(key, value);
@@ -105,6 +158,7 @@ public class CustomHashMap<K, V> implements CustomMap<K, V> {
         if (buckets[hashCodeMod] == null) {
             CustomLinkedList<MapEntry<K, V>> linkedList = new CustomLinkedList<>();
             linkedList.add(newEntry);
+            buckets[hashCodeMod] = linkedList;
             elementWasAdded = true;
         } else if (!containsKey(key) && buckets[hashCodeMod].size() < MAX_ELEMENTS_IN_LIST) {
             buckets[hashCodeMod].add(newEntry);
@@ -112,6 +166,9 @@ public class CustomHashMap<K, V> implements CustomMap<K, V> {
         } else if (!containsKey(key) && buckets[hashCodeMod].size() >= MAX_ELEMENTS_IN_LIST) {
             addBucketsCapacity();
             put(key, value);
+        } else if (containsKey(key)) {
+            MapEntry<K, V> entry = getMapEntry(key);
+            entry.value = value;
         }
 
         if (elementWasAdded) {
@@ -122,8 +179,31 @@ public class CustomHashMap<K, V> implements CustomMap<K, V> {
     }
 
     @Override
+    public V put(K key, V value) {
+        return putRecursive(key, value);
+    }
+
+    @Override
     public V remove(K key) {
-        return null;
+        int hashCodeMod = getHashCodeModulus(key);
+        boolean keyWasFound = false;
+        V removedValue = null;
+
+        if (containsKey(key)) {
+            CustomLinkedList<MapEntry<K, V>> linkedList = buckets[hashCodeMod];
+            CustomIterator<MapEntry<K, V>> iterator = linkedList.iterator();
+
+            while (iterator.hasNext()) {
+                MapEntry<K, V> currentEntry = iterator.next();
+                if (currentEntry.key == key) {
+                    removedValue = currentEntry.value;
+                    linkedList.remove(currentEntry);
+                    break;
+                }
+            }
+        }
+
+        return removedValue;
     }
 
     @Override
@@ -133,7 +213,16 @@ public class CustomHashMap<K, V> implements CustomMap<K, V> {
 
     @Override
     public V replace(K key, V value) {
-        return null;
+        MapEntry<K, V> entry = getMapEntry(key);
+
+        if (entry == null) {
+            return null;
+        }
+
+        V oldValue = entry.value;
+        entry.value = value;
+
+        return oldValue;
     }
 
     @Override

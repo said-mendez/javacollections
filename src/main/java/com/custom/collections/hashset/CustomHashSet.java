@@ -52,7 +52,7 @@ public class CustomHashSet<E> implements Set<E> {
         }
     }
 
-    public boolean addRecursive(E element) {
+    private boolean addRecursive(E element) {
         int hashCodeMod = getHashCodeModulus(element);
         boolean elementWasAdded = false;
 
